@@ -3,23 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b0a12">
-  <meta name="description" content="Un archivo de amor creado para Jenny Marileth Orozco.">
-  <title>Para Jenny | Nuestro archivo de amor</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%E2%9D%A4%EF%B8%8F%3C/text%3E%3C/svg%3E">
+  <meta name="theme-color" content="#160b20">
+  <meta name="description" content="365 días de amor para Jenny Marileth Orozco.">
+  <title>Para Jenny | 365 días contigo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Italiana&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%92%97%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="ambient ambient-a" aria-hidden="true"></div>
-  <div class="ambient ambient-b" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="aurora aurora-one" aria-hidden="true"></div>
+  <div class="aurora aurora-two" aria-hidden="true"></div>
 
   <header class="site-header">
     <a class="brand" href="#inicio" aria-label="Ir al inicio">
-      <span class="brand-symbol">J</span>
-      <span class="brand-copy">
+      <span class="brand-mark">J</span>
+      <span>
         <strong>Para Jenny</strong>
-        <small>Archivo de amor</small>
+        <small>365 días de amor</small>
       </span>
     </a>
 
@@ -29,82 +33,105 @@
       <a href="#carta">Carta</a>
     </nav>
 
-    <button class="icon-button" id="soundButton" type="button" aria-pressed="false" aria-label="Activar música romántica" title="Música romántica">
+    <button class="sound-button" id="soundButton" type="button" aria-pressed="false" aria-label="Activar música romántica">
+      <span class="sound-ring"></span>
       <span id="soundIcon">♪</span>
     </button>
   </header>
 
   <main>
-    <section class="hero shell" id="inicio">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">Un detalle nuevo cada día</p>
-        <h1>Jenny<br><span>Marileth Orozco</span></h1>
-        <p class="hero-text">Creé este lugar para guardar lo que siento, lo que vivimos y todo lo que aún quiero compartir contigo.</p>
+    <section class="hero" id="inicio">
+      <div class="hero-number" aria-hidden="true">365</div>
+      <div class="hero-grid shell">
+        <div class="hero-copy reveal">
+          <p class="kicker"><span></span> Un universo creado para ti</p>
+          <h1>Jenny<br><em>Marileth</em><br>Orozco</h1>
+          <p class="hero-lead">Un rincón digital donde cada día se abre una frase, una fotografía, una carta y una melodía diferente.</p>
 
-        <div class="hero-actions">
-          <a class="button button-primary" href="#hoy">Abrir el detalle de hoy</a>
-          <button class="button button-secondary" id="surpriseButton" type="button">Ver un recuerdo</button>
+          <div class="hero-actions">
+            <a class="button button-main" href="#hoy">Abrir el día de hoy <span>↗</span></a>
+            <button class="button button-ghost" id="surpriseButton" type="button">Sorpréndeme</button>
+          </div>
+
+          <div class="hero-stats">
+            <div><strong>365</strong><span>mensajes</span></div>
+            <div><strong>35</strong><span>recuerdos</span></div>
+            <div><strong>∞</strong><span>amor</span></div>
+          </div>
         </div>
 
-        <div class="hero-meta">
-          <div>
+        <div class="hero-visual reveal" id="heroVisual">
+          <div class="photo-halo"></div>
+          <div class="photo-shell">
+            <img id="heroPhoto" src="foto-01.jpg" alt="Jenny y su historia de amor">
+            <div class="photo-shade"></div>
+            <div class="photo-date">
+              <span id="heroMonth">JUL</span>
+              <strong id="heroDay">21</strong>
+            </div>
+            <div class="photo-caption">
+              <small>Frase de hoy</small>
+              <p id="heroQuote">Mi lugar favorito empieza donde estás tú.</p>
+            </div>
+          </div>
+
+          <div class="floating-note note-love">
+            <span>mi negrita</span>
+            <strong>Te elegiría otra vez.</strong>
+          </div>
+          <div class="floating-note note-project">
             <span>Proyecto</span>
             <strong id="heroProject">365 días de amor</strong>
           </div>
-          <div>
-            <span>Creado para</span>
-            <strong>Jenny</strong>
+          <div class="rotating-stamp" aria-hidden="true">
+            <div>PARA JENNY • CON AMOR • PARA JENNY • CON AMOR •</div>
+            <span>♥</span>
           </div>
         </div>
       </div>
 
-      <div class="hero-art reveal" aria-hidden="true">
-        <div class="art-frame">
-          <img id="heroPhoto" class="hero-photo" src="foto-01.jpg" alt="Jenny y su historia de amor">
-          <div class="art-overlay"></div>
-          <div class="art-date">
-            <span id="heroMonth">JUL</span>
-            <strong id="heroDay">21</strong>
-          </div>
-          <div class="art-badge">Mi negrita</div>
-          <p id="heroQuote">Mi lugar favorito empieza donde estás tú.</p>
-          <div class="art-signature">con amor</div>
+      <div class="love-marquee" aria-hidden="true">
+        <div>
+          <span>MI AMOR</span><i>✦</i><span>MI VIDA</span><i>✦</i><span>MI CIELO</span><i>✦</i><span>MI COSITA BELLA</span><i>✦</i><span>MI FLACA</span><i>✦</i>
+          <span>MI AMOR</span><i>✦</i><span>MI VIDA</span><i>✦</i><span>MI CIELO</span><i>✦</i><span>MI COSITA BELLA</span><i>✦</i><span>MI FLACA</span><i>✦</i>
         </div>
-        <span class="orbit orbit-one"></span>
-        <span class="orbit orbit-two"></span>
       </div>
     </section>
 
-    <section class="daily shell" id="hoy">
-      <div class="section-title reveal">
+    <section class="today-section shell" id="hoy">
+      <div class="section-heading reveal">
         <div>
-          <p class="eyebrow">Entrada del día</p>
-          <h2>Hoy pensé en ti</h2>
+          <p class="kicker"><span></span> La cápsula de hoy</p>
+          <h2>Una emoción.<br>Una imagen.<br>Un mensaje.</h2>
         </div>
-        <p class="date-label" id="todayDate"></p>
+        <div class="date-chip" id="todayDate"></div>
       </div>
 
-      <article class="daily-card reveal">
-        <div class="daily-index">
-          <span>Día</span>
+      <article class="daily-bento reveal">
+        <div class="day-ticket">
+          <span>ENTRADA</span>
           <strong id="yearDay">001</strong>
-          <small>de 365</small>
+          <small>DE 365</small>
+          <div class="ticket-line"></div>
+          <p>Creado exclusivamente para Jenny.</p>
         </div>
 
-        <figure class="daily-visual">
-          <img id="dailyImage" src="foto-01.jpg" alt="Ilustración romántica del día">
+        <figure class="daily-photo">
+          <img id="dailyImage" src="foto-01.jpg" alt="Fotografía romántica del día">
           <figcaption id="dailyImageCaption">Tu presencia</figcaption>
+          <span class="photo-index">J × 365</span>
         </figure>
 
-        <div class="daily-message">
+        <div class="daily-quote-panel">
+          <div class="quote-mark">“</div>
           <span class="mini-label">Frase de hoy</span>
           <blockquote id="dailyPhrase"></blockquote>
           <p id="dailyNote"></p>
-          <div class="daily-actions">
+          <div class="daily-footer">
             <span id="dailyWord">TÚ</span>
-            <button class="text-button" id="copyButton" type="button">Copiar frase</button>
+            <button class="copy-button" id="copyButton" type="button">Copiar frase <span>↗</span></button>
           </div>
-          <div class="day-progress" aria-label="Progreso de los 365 días">
+          <div class="day-progress">
             <div><span id="progressBar"></span></div>
             <small id="progressText">1 de 365</small>
           </div>
@@ -112,11 +139,12 @@
       </article>
     </section>
 
-    <section class="story shell reveal" aria-label="Contador de nuestra historia">
-      <div class="story-copy">
-        <p class="eyebrow">Nuestra historia sigue</p>
-        <h2>Cada segundo cuenta</h2>
-        <p>Este contador empieza en una fecha especial. Cada número representa tiempo, presencia y una historia que sigue creciendo.</p>
+    <section class="story-section shell reveal" aria-label="Contador de nuestra historia">
+      <div class="story-intro">
+        <span class="story-symbol">♥</span>
+        <p class="kicker"><span></span> Nuestra historia sigue</p>
+        <h2>El tiempo también<br>aprendió tu nombre.</h2>
+        <p>Cada segundo suma una nueva línea a nuestra historia.</p>
       </div>
 
       <div class="counter" id="counter">
@@ -127,48 +155,54 @@
       </div>
     </section>
 
-    <section class="memories shell" id="recuerdos">
-      <div class="section-title reveal">
+    <section class="memories-section shell" id="recuerdos">
+      <div class="section-heading memories-heading reveal">
         <div>
-          <p class="eyebrow">Archivo del corazón</p>
-          <h2>Días que ya forman parte de nosotros</h2>
+          <p class="kicker"><span></span> Museo de nosotros</p>
+          <h2>Recuerdos que<br>se niegan a irse.</h2>
         </div>
-        <p class="section-note"><span id="archiveNote">Cada día desbloquea una frase, una carta y una imagen nueva.</span></p>
+        <p class="archive-note" id="archiveNote">Cada día desbloquea una frase, una carta y una imagen nueva.</p>
       </div>
-
       <div class="memory-grid" id="memoryGrid"></div>
     </section>
 
-    <section class="letter shell" id="carta">
-      <div class="letter-card reveal">
+    <section class="letter-section shell" id="carta">
+      <div class="letter-stage reveal">
         <div class="letter-copy">
-          <p class="eyebrow" id="letterDay">Carta del día 1</p>
-          <h2>Hay palabras que merecen quedarse.</h2>
-          <p>Cada día contiene una carta distinta. Ábrela y guarda estas palabras cerca de ti.</p>
-          <button class="button button-primary" id="openLetter" type="button">Abrir la carta</button>
+          <p class="kicker" id="letterDay"><span></span> Carta del día 1</p>
+          <h2>Hay palabras que<br>merecen quedarse.</h2>
+          <p>Una carta distinta espera por ti cada día. Ábrela cuando quieras sentirme cerca.</p>
+          <button class="button button-main" id="openLetter" type="button">Abrir mi carta <span>↗</span></button>
         </div>
 
-        <div class="envelope" aria-hidden="true">
-          <div class="envelope-paper">J</div>
-          <div class="envelope-body"></div>
-          <div class="envelope-seal">♥</div>
+        <div class="envelope-scene" aria-hidden="true">
+          <div class="letter-paper">
+            <span>Para Jenny</span>
+            <strong>J</strong>
+            <small>con todo mi amor</small>
+          </div>
+          <div class="envelope-back"></div>
+          <div class="envelope-front"></div>
+          <div class="wax-seal">♥</div>
+          <div class="spark spark-one">✦</div>
+          <div class="spark spark-two">✦</div>
         </div>
       </div>
     </section>
 
-    <section class="closing shell reveal">
-      <p class="eyebrow">Continuará</p>
-      <h2>Mañana habrá otra frase, otra carta y otra imagen para ti.</h2>
-      <p>Durante 365 días, este sitio irá revelando una nueva forma de decirte cuánto te amo.</p>
+    <section class="closing-section shell reveal">
+      <p class="kicker"><span></span> Mañana continúa</p>
+      <h2>Otro día.<br>Otra forma de<br>decirte te amo.</h2>
+      <div class="closing-orbit"><span>J</span></div>
     </section>
   </main>
 
   <footer class="footer shell">
-    <p>Hecho con amor para <span id="footerName">Jenny Marileth Orozco</span>.</p>
+    <p>Hecho con amor para <strong id="footerName">Jenny Marileth Orozco</strong>.</p>
     <p id="year"></p>
   </footer>
 
-  <dialog class="modal" id="memoryModal">
+  <dialog class="modal memory-modal" id="memoryModal">
     <button class="modal-close" id="closeMemory" type="button" aria-label="Cerrar">×</button>
     <img id="modalImage" src="" alt="">
     <div class="modal-content">
@@ -179,7 +213,7 @@
   </dialog>
 
   <dialog class="modal letter-modal" id="letterModal">
-    <button class="modal-close" id="closeLetter" type="button" aria-label="Cerrar">×</button>
+    <button class="modal-close dark" id="closeLetter" type="button" aria-label="Cerrar">×</button>
     <div class="paper" id="letterContent"></div>
   </dialog>
 

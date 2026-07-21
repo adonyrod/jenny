@@ -437,8 +437,35 @@
   $("#closeLetter").addEventListener("click", () => letterModal.close());
   [memoryModal, letterModal].forEach((dialog) => dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); }));
 
+
+  function enableCreativeMotion() {
+    const glow = document.querySelector("#cursorGlow");
+    const visual = document.querySelector("#heroVisual");
+    const photo = document.querySelector(".photo-shell");
+    if (glow && matchMedia("(pointer:fine)").matches) {
+      window.addEventListener("pointermove", (event) => {
+        glow.style.left = `${event.clientX}px`;
+        glow.style.top = `${event.clientY}px`;
+      }, { passive: true });
+    }
+    if (visual && photo && matchMedia("(pointer:fine)").matches) {
+      visual.addEventListener("pointermove", (event) => {
+        const rect = visual.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        photo.style.transform = `rotate(${2.4 + x * 3}deg) rotateX(${-y * 4}deg) rotateY(${x * 5}deg)`;
+      });
+      visual.addEventListener("pointerleave", () => {
+        photo.style.transform = "rotate(2.4deg) rotateX(0deg) rotateY(0deg)";
+      });
+    }
+    document.querySelectorAll(".memory-card").forEach((card, index) => {
+      card.style.setProperty("--delay", `${Math.min(index * 55, 400)}ms`);
+    });
+  }
+
   $("#footerName").textContent = content.nombre;
   $("#year").textContent = new Date().getFullYear();
-  setDailyContent(); renderArchive(); renderLetter(); updateCounter(); setInterval(updateCounter, 1000); observeReveals();
+  setDailyContent(); renderArchive(); renderLetter(); updateCounter(); setInterval(updateCounter, 1000); observeReveals(); enableCreativeMotion();
   setTimeout(() => showToast("Toca ♪ para escuchar la melodía romántica de hoy"), 1200);
 })();
