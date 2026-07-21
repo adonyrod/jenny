@@ -1,1 +1,5 @@
-SUBE TODOS LOS ARCHIVOS A LA RAÍZ DEL REPOSITORIO. NO HAY CARPETA ASSETS.
+VERSIÓN CON 365 MELODÍAS ORIGINALES
+
+Sube todos los archivos a la raíz del repositorio.
+La música cambia automáticamente según el día del proyecto.
+Toca el botón ♪ para iniciar o pausar la melodía.
