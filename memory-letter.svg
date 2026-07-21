@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8c4ce"/><stop offset=".5" stop-color="#c989b5"/><stop offset="1" stop-color="#65487f"/></linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <g opacity=".34" filter="url(#blur)">
+    <circle cx="240" cy="180" r="130" fill="#fff"/><circle cx="910" cy="260" r="170" fill="#ffb8c8"/><circle cx="680" cy="700" r="210" fill="#8d6cd1"/>
+  </g>
+  <g fill="none" stroke="#4c345d" stroke-width="12" stroke-linecap="round">
+    <path d="M240 900c5-230 115-430 302-585"/><path d="M602 900c-9-220 75-427 242-612"/><path d="M880 900c-68-240-34-430 79-570"/>
+  </g>
+  <g transform="translate(514 260)">
+    <g fill="#fff3f6"><ellipse rx="62" ry="120" transform="rotate(0) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(72) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(144) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(216) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(288) translate(0 -80)"/></g>
+    <circle r="58" fill="#ffd590"/>
+  </g>
+  <g transform="translate(850 230) scale(.74)">
+    <g fill="#ffd1df"><ellipse rx="62" ry="120" transform="rotate(0) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(72) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(144) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(216) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(288) translate(0 -80)"/></g>
+    <circle r="58" fill="#fff0b0"/>
+  </g>
+  <g transform="translate(980 390) scale(.48)">
+    <g fill="#f5d4ff"><ellipse rx="62" ry="120" transform="rotate(0) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(72) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(144) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(216) translate(0 -80)"/><ellipse rx="62" ry="120" transform="rotate(288) translate(0 -80)"/></g>
+    <circle r="58" fill="#ffd590"/>
+  </g>
+</svg>

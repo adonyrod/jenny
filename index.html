@@ -1,191 +1,213 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b0a12">
-  <meta name="description" content="Un archivo de amor creado para Jenny Marileth Orozco.">
-  <title>Para Jenny | Nuestro archivo de amor</title>
-  <link rel="icon" href="assets/heart.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles-v2.css?v=20260721-2">
-</head>
-<body>
-  <div class="ambient ambient-a" aria-hidden="true"></div>
-  <div class="ambient ambient-b" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
+(() => {
+  const content = window.JENNY_CONTENT;
+  const $ = (selector) => document.querySelector(selector);
+  const memoryGrid = $("#memoryGrid");
+  const memoryModal = $("#memoryModal");
+  const letterModal = $("#letterModal");
+  const toast = $("#toast");
 
-  <header class="site-header">
-    <a class="brand" href="#inicio" aria-label="Ir al inicio">
-      <span class="brand-symbol">J</span>
-      <span class="brand-copy">
-        <strong>Para Jenny</strong>
-        <small>Archivo de amor</small>
-      </span>
-    </a>
+  function localDayNumber(date) {
+    return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  }
 
-    <nav class="nav" aria-label="Navegación principal">
-      <a href="#hoy">Hoy</a>
-      <a href="#recuerdos">Recuerdos</a>
-      <a href="#carta">Carta</a>
-    </nav>
+  function getState() {
+    const now = new Date();
+    const parts = content.fechaInicio.split("-").map(Number);
+    const start = new Date(parts[0], parts[1] - 1, parts[2]);
+    let elapsed = Math.floor((localDayNumber(now) - localDayNumber(start)) / 86400000);
 
-    <button class="icon-button" id="soundButton" type="button" aria-pressed="false" aria-label="Activar sonido">
-      <span id="soundIcon">♪</span>
-    </button>
-  </header>
+    const params = new URLSearchParams(location.search);
+    const preview = Number(params.get("dia"));
+    const localPreview = location.protocol === "file:" || location.hostname === "localhost" || location.hostname === "127.0.0.1";
+    if (localPreview && Number.isInteger(preview) && preview >= 1 && preview <= content.totalDias) {
+      elapsed = preview - 1;
+    }
 
-  <main>
-    <section class="hero shell" id="inicio">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">Un detalle nuevo cada día</p>
-        <h1>Jenny<br><span>Marileth Orozco</span></h1>
-        <p class="hero-text">Creé este lugar para guardar lo que siento, lo que vivimos y todo lo que aún quiero compartir contigo.</p>
+    const index = Math.min(Math.max(elapsed, 0), content.totalDias - 1);
+    const unlocked = Math.min(Math.max(elapsed + 1, 1), content.totalDias);
+    return { now, index, unlocked, entry: content.dias[index] };
+  }
 
-        <div class="hero-actions">
-          <a class="button button-primary" href="#hoy">Abrir el detalle de hoy</a>
-          <button class="button button-secondary" id="surpriseButton" type="button">Ver un recuerdo</button>
-        </div>
+  const state = getState();
 
-        <div class="hero-meta">
-          <div>
-            <span>Proyecto</span>
-            <strong id="heroProject">365 días de amor</strong>
-          </div>
-          <div>
-            <span>Creado para</span>
-            <strong>Jenny</strong>
-          </div>
-        </div>
-      </div>
+  function birthdayEntry(now, fallback) {
+    if (now.getMonth() !== 6 || now.getDate() !== 30) return fallback;
+    return {
+      ...fallback,
+      titulo: "Feliz cumpleaños, Jenny",
+      palabra: "CELEBRARTE",
+      frase: "Feliz cumpleaños, mi amor. Hoy celebro tu vida, tu sonrisa y la bendición de tenerte en mi camino.",
+      nota: "Mi vida, cada 30 de julio quiero recordarte cuánto vales. Deseo que este nuevo año te regale salud, paz, metas cumplidas y muchos momentos a mi lado. Te amo, mi cielo.",
+      carta: [
+        "Mi negrita hermosa:",
+        "Hoy es 30 de julio, el día en que nació la mujer que amo. Gracias por existir y por llenar mi vida con tu forma de ser, tu fuerza y tu cariño.",
+        "Mi cosita bella, deseo acompañarte en cada cumpleaños, celebrar tus sueños y sostener tu mano en cada etapa. Mereces un año lleno de alegría, salud y oportunidades.",
+        "Feliz cumpleaños, mi flaca. Te amo con todo mi corazón. Hoy y todos los días, celebro tu vida."
+      ],
+      imagen: "assets/fotos/foto-21.jpg"
+    };
+  }
 
-      <div class="hero-art reveal" aria-hidden="true">
-        <div class="art-frame">
-          <img id="heroPhoto" class="hero-photo" src="assets/fotos/foto-01.jpg" alt="Jenny y su historia de amor">
-          <div class="art-overlay"></div>
-          <div class="art-date">
-            <span id="heroMonth">JUL</span>
-            <strong id="heroDay">21</strong>
-          </div>
-          <div class="art-badge">Mi negrita</div>
-          <p id="heroQuote">Mi lugar favorito empieza donde estás tú.</p>
-          <div class="art-signature">con amor</div>
-        </div>
-        <span class="orbit orbit-one"></span>
-        <span class="orbit orbit-two"></span>
-      </div>
-    </section>
+  state.entry = birthdayEntry(state.now, state.entry);
 
-    <section class="daily shell" id="hoy">
-      <div class="section-title reveal">
-        <div>
-          <p class="eyebrow">Entrada del día</p>
-          <h2>Hoy pensé en ti</h2>
-        </div>
-        <p class="date-label" id="todayDate"></p>
-      </div>
+  function setDailyContent() {
+    const { now, entry, index } = state;
+    const fullDate = new Intl.DateTimeFormat("es", {
+      weekday: "long", day: "numeric", month: "long", year: "numeric"
+    }).format(now);
+    const month = new Intl.DateTimeFormat("es", { month: "short" }).format(now).replace(".", "").toUpperCase();
 
-      <article class="daily-card reveal">
-        <div class="daily-index">
-          <span>Día</span>
-          <strong id="yearDay">001</strong>
-          <small>de 365</small>
-        </div>
+    $("#todayDate").textContent = fullDate.charAt(0).toUpperCase() + fullDate.slice(1);
+    $("#heroMonth").textContent = month;
+    $("#heroDay").textContent = String(now.getDate()).padStart(2, "0");
+    $("#yearDay").textContent = String(entry.dia).padStart(3, "0");
+    $("#dailyPhrase").textContent = `“${entry.frase}”`;
+    $("#dailyNote").textContent = entry.nota;
+    $("#dailyWord").textContent = entry.palabra;
+    $("#dailyImage").src = entry.imagen;
+    $("#dailyImage").alt = `Fotografía romántica del día ${entry.dia}: ${entry.titulo}`;
+    $("#heroPhoto").src = entry.imagen;
+    $("#heroPhoto").alt = `Recuerdo especial del día ${entry.dia}`;
+    $("#dailyImageCaption").textContent = entry.titulo;
+    $("#progressText").textContent = `${entry.dia} de ${content.totalDias}`;
+    $("#progressBar").style.width = `${((index + 1) / content.totalDias) * 100}%`;
+    $("#heroProject").textContent = `${content.totalDias} días de amor`;
+    $("#heroQuote").textContent = entry.frase.replace(/^[^,]+,\s*/, "");
+  }
 
-        <figure class="daily-visual">
-          <img id="dailyImage" src="assets/dias/dia-001.svg" alt="Ilustración romántica del día">
-          <figcaption id="dailyImageCaption">Tu presencia</figcaption>
-        </figure>
+  function renderArchive() {
+    memoryGrid.innerHTML = "";
+    const start = Math.max(0, state.unlocked - 9);
+    const visible = content.dias.slice(start, state.unlocked).reverse();
 
-        <div class="daily-message">
-          <span class="mini-label">Frase de hoy</span>
-          <blockquote id="dailyPhrase"></blockquote>
-          <p id="dailyNote"></p>
-          <div class="daily-actions">
-            <span id="dailyWord">TÚ</span>
-            <button class="text-button" id="copyButton" type="button">Copiar frase</button>
-          </div>
-          <div class="day-progress" aria-label="Progreso de los 365 días">
-            <div><span id="progressBar"></span></div>
-            <small id="progressText">1 de 365</small>
-          </div>
-        </div>
-      </article>
-    </section>
+    visible.forEach((day) => {
+      const card = document.createElement("article");
+      card.className = "memory-card reveal";
+      card.tabIndex = 0;
+      card.setAttribute("role", "button");
+      card.setAttribute("aria-label", `Abrir detalle del día ${day.dia}`);
+      card.innerHTML = `
+        <img src="${day.imagen}" alt="Fotografía del día ${day.dia}: ${day.titulo}" loading="lazy">
+        <div class="memory-card-content">
+          <time>Día ${String(day.dia).padStart(3, "0")}</time>
+          <h3>${day.titulo}</h3>
+        </div>`;
+      const open = () => openMemory(day);
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); open(); }
+      });
+      memoryGrid.appendChild(card);
+    });
 
-    <section class="story shell reveal" aria-label="Contador de nuestra historia">
-      <div class="story-copy">
-        <p class="eyebrow">Nuestra historia sigue</p>
-        <h2>Cada segundo cuenta</h2>
-        <p>Este contador empieza en una fecha especial. Cada número representa tiempo, presencia y una historia que sigue creciendo.</p>
-      </div>
+    $("#archiveNote").textContent = state.unlocked === 1
+      ? "Hoy comienza este archivo. Mañana aparecerá un nuevo detalle."
+      : `Ya se han desbloqueado ${state.unlocked} detalles. Aquí aparecen los nueve más recientes.`;
+  }
 
-      <div class="counter" id="counter">
-        <div><strong id="days">0</strong><span>días</span></div>
-        <div><strong id="hours">00</strong><span>horas</span></div>
-        <div><strong id="minutes">00</strong><span>minutos</span></div>
-        <div><strong id="seconds">00</strong><span>segundos</span></div>
-      </div>
-    </section>
+  function openMemory(day) {
+    $("#modalImage").src = day.imagen;
+    $("#modalImage").alt = `Fotografía del día ${day.dia}: ${day.titulo}`;
+    $("#modalDate").textContent = `Día ${day.dia} de ${content.totalDias}`;
+    $("#modalTitle").textContent = day.titulo;
+    $("#modalText").textContent = day.frase;
+    memoryModal.showModal();
+  }
 
-    <section class="memories shell" id="recuerdos">
-      <div class="section-title reveal">
-        <div>
-          <p class="eyebrow">Archivo del corazón</p>
-          <h2>Días que ya forman parte de nosotros</h2>
-        </div>
-        <p class="section-note"><span id="archiveNote">Cada día desbloquea una frase, una carta y una imagen nueva.</span></p>
-      </div>
+  function renderLetter() {
+    $("#letterContent").innerHTML = state.entry.carta.map((paragraph) => `<p>${paragraph}</p>`).join("");
+    $("#letterDay").textContent = `Carta del día ${state.entry.dia}`;
+  }
 
-      <div class="memory-grid" id="memoryGrid"></div>
-    </section>
+  function updateCounter() {
+    const [year, month, day] = content.fechaInicio.split("-").map(Number);
+    const start = new Date(year, month - 1, day).getTime();
+    const distance = Math.max(0, Date.now() - start);
+    const days = Math.floor(distance / 86400000);
+    const hours = Math.floor((distance % 86400000) / 3600000);
+    const minutes = Math.floor((distance % 3600000) / 60000);
+    const seconds = Math.floor((distance % 60000) / 1000);
+    $("#days").textContent = days.toLocaleString("es");
+    $("#hours").textContent = String(hours).padStart(2, "0");
+    $("#minutes").textContent = String(minutes).padStart(2, "0");
+    $("#seconds").textContent = String(seconds).padStart(2, "0");
+  }
 
-    <section class="letter shell" id="carta">
-      <div class="letter-card reveal">
-        <div class="letter-copy">
-          <p class="eyebrow" id="letterDay">Carta del día 1</p>
-          <h2>Hay palabras que merecen quedarse.</h2>
-          <p>Cada día contiene una carta distinta. Ábrela y guarda estas palabras cerca de ti.</p>
-          <button class="button button-primary" id="openLetter" type="button">Abrir la carta</button>
-        </div>
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
+  }
 
-        <div class="envelope" aria-hidden="true">
-          <div class="envelope-paper">J</div>
-          <div class="envelope-body"></div>
-          <div class="envelope-seal">♥</div>
-        </div>
-      </div>
-    </section>
+  function observeReveals() {
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { entry.target.classList.add("visible"); currentObserver.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+  }
 
-    <section class="closing shell reveal">
-      <p class="eyebrow">Continuará</p>
-      <h2>Mañana habrá otra frase, otra carta y otra imagen para ti.</h2>
-      <p>Durante 365 días, este sitio irá revelando una nueva forma de decirte cuánto te amo.</p>
-    </section>
-  </main>
+  function launchHearts(x = innerWidth / 2, y = innerHeight / 2) {
+    const symbols = ["♥", "♡", "✦"];
+    for (let i = 0; i < 18; i += 1) {
+      const particle = document.createElement("span");
+      particle.className = "heart-particle";
+      particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      particle.style.left = `${x + (Math.random() - 0.5) * 90}px`;
+      particle.style.top = `${y + (Math.random() - 0.5) * 40}px`;
+      particle.style.setProperty("--x", `${(Math.random() - 0.5) * 180}px`);
+      particle.style.setProperty("--r", `${(Math.random() - 0.5) * 80}deg`);
+      particle.style.color = Math.random() > 0.5 ? "#ffd2df" : "#b59cff";
+      particle.style.fontSize = `${0.8 + Math.random() * 1.1}rem`;
+      document.body.appendChild(particle);
+      setTimeout(() => particle.remove(), 1500);
+    }
+  }
 
-  <footer class="footer shell">
-    <p>Hecho con amor para <span id="footerName">Jenny Marileth Orozco</span>.</p>
-    <p id="year"></p>
-  </footer>
+  function createSoundToggle() {
+    let context; let active = false; let timer;
+    function playSequence() {
+      if (!active) return;
+      [261.63, 329.63, 392, 523.25].forEach((frequency, index) => {
+        setTimeout(() => {
+          if (!active || !context) return;
+          const oscillator = context.createOscillator();
+          const gain = context.createGain();
+          oscillator.type = "sine"; oscillator.frequency.value = frequency;
+          gain.gain.setValueAtTime(0, context.currentTime);
+          gain.gain.linearRampToValueAtTime(0.025, context.currentTime + 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 2.2);
+          oscillator.connect(gain).connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + 2.3);
+        }, index * 580);
+      });
+      timer = setTimeout(playSequence, 3900);
+    }
+    return async (button) => {
+      active = !active; button.setAttribute("aria-pressed", String(active)); $("#soundIcon").textContent = active ? "♫" : "♪";
+      if (active) { context ||= new (window.AudioContext || window.webkitAudioContext)(); await context.resume(); playSequence(); showToast("Sonido activado"); }
+      else { clearTimeout(timer); showToast("Sonido desactivado"); }
+    };
+  }
 
-  <dialog class="modal" id="memoryModal">
-    <button class="modal-close" id="closeMemory" type="button" aria-label="Cerrar">×</button>
-    <img id="modalImage" src="" alt="">
-    <div class="modal-content">
-      <p id="modalDate"></p>
-      <h3 id="modalTitle"></h3>
-      <p id="modalText"></p>
-    </div>
-  </dialog>
+  const toggleSound = createSoundToggle();
+  $("#copyButton").addEventListener("click", async () => {
+    const phrase = state.entry.frase;
+    try { await navigator.clipboard.writeText(phrase); showToast("Frase copiada"); }
+    catch { showToast("Selecciona la frase para copiarla"); }
+  });
+  $("#surpriseButton").addEventListener("click", (event) => {
+    const day = content.dias[Math.floor(Math.random() * state.unlocked)];
+    launchHearts(event.clientX, event.clientY); setTimeout(() => openMemory(day), 250);
+  });
+  $("#soundButton").addEventListener("click", (event) => toggleSound(event.currentTarget));
+  $("#openLetter").addEventListener("click", (event) => { launchHearts(event.clientX, event.clientY); letterModal.showModal(); });
+  $("#closeMemory").addEventListener("click", () => memoryModal.close());
+  $("#closeLetter").addEventListener("click", () => letterModal.close());
+  [memoryModal, letterModal].forEach((dialog) => dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); }));
 
-  <dialog class="modal letter-modal" id="letterModal">
-    <button class="modal-close" id="closeLetter" type="button" aria-label="Cerrar">×</button>
-    <div class="paper" id="letterContent"></div>
-  </dialog>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script src="contenido-v2.js?v=20260721-2"></script>
-  <script src="app-v2.js?v=20260721-2"></script>
-</body>
-</html>
+  $("#footerName").textContent = content.nombre;
+  $("#year").textContent = new Date().getFullYear();
+  setDailyContent(); renderArchive(); renderLetter(); updateCounter(); setInterval(updateCounter, 1000); observeReveals();
+})();
