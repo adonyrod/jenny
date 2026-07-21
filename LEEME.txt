@@ -1,0 +1,9 @@
+PÁGINA PARA JENNY, VERSIÓN CORREGIDA
+
+1. Descomprime este ZIP.
+2. Sube TODO su contenido a la raíz del repositorio.
+3. Deben aparecer index.html, assets, contenido-v2.js, app-v2.js y styles-v2.css.
+4. Confirma los cambios.
+5. Espera unos minutos y abre la página con Ctrl + F5.
+
+No subas el ZIP sin descomprimir. No omitas la carpeta assets.
